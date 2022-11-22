@@ -1,7 +1,10 @@
+const TIMER_DELAY = 1000;
+
 const startColorSwitcher = document.querySelector('button[data-start]');
 const stopColorSwitcher = document.querySelector('button[data-stop]');
 const body = document.querySelector('body');
-let intervalId = null;
+
+let timerId = null;
 
 stopColorSwitcher.setAttribute('disabled', '');
 
@@ -17,13 +20,14 @@ const handleStartButton = () => {
   startColorSwitcher.setAttribute('disabled', '');
   stopColorSwitcher.removeAttribute('disabled');
 
-  intervalId = setInterval(bodyColorChanger, 1000);
+  timerId = setInterval(bodyColorChanger, TIMER_DELAY);
 };
+
 const handleStopButton = () => {
   startColorSwitcher.removeAttribute('disabled');
   stopColorSwitcher.setAttribute('disabled', '');
 
-  clearInterval(intervalId);
+  clearInterval(timerId);
 };
 
 startColorSwitcher.addEventListener('click', handleStartButton);
