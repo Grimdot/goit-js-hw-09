@@ -4,18 +4,12 @@ import 'notiflix/dist/notiflix-3.2.5.min.css';
 const form = document.querySelector('form');
 const submitButton = document.querySelector('button[type="submit"]');
 
-let delay = null;
-let delayStep = null;
-let amount = null;
-
-console.log(form.elements);
-
 function onFormSubmit(e) {
   e.preventDefault();
 
-  delay = Number(form.elements.delay.value);
-  delayStep = Number(form.elements.step.value);
-  amount = Number(form.elements.amount.value);
+  let delay = Number(form.elements.delay.value);
+  const delayStep = Number(form.elements.step.value);
+  const amount = Number(form.elements.amount.value);
 
   let totalDelay = delay + delayStep * amount;
 
