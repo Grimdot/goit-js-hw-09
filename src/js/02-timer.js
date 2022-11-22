@@ -12,9 +12,9 @@ const refs = {
 };
 
 let timerId = null;
-let selectedDate = null;
+let selectedDateMs = null;
 
-refs.startTimerButton.setAttribute('disabled', true);
+refs.startTimerButton.setAttribute('disabled', '');
 
 const flatpickrOptions = {
   enableTime: true,
@@ -22,15 +22,16 @@ const flatpickrOptions = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    selectedDate = selectedDates[0];
+    selectedDateMs = selectedDates[0].getTime();
+
     if (timerId) {
       clearInterval(timerId);
     }
-    if (selectedDate < new Date()) {
-      refs.startTimerButton.setAttribute('disabled', true);
+    if (selectedDateMs < Date.now()) {
+      refs.startTimerButton.setAttribute('disabled', '');
       Notiflix.Notify.failure('Please choose a date in the future');
     } else {
-      refs.startTimerButton.removeAttribute('disabled', true);
+      refs.startTimerButton.removeAttribute('disabled', '');
     }
   },
 };
@@ -62,9 +63,9 @@ function addLeadingZero(value) {
 
 function onClickTimerStart() {
   timerId = setInterval(() => {
-    const deltaDay = selectedDate.getTime() - Date.now();
+    const deltaTime = selectedDateMs - Date.now();
 
-    const convertedTime = convertMs(deltaDay);
+    const convertedTime = convertMs(deltaTime);
 
     refs.daysValue.textContent = addLeadingZero(convertedTime.days);
     refs.hoursValue.textContent = addLeadingZero(convertedTime.hours);

@@ -3,7 +3,7 @@ const stopColorSwitcher = document.querySelector('button[data-stop]');
 const body = document.querySelector('body');
 let intervalId = null;
 
-stopColorSwitcher.setAttribute('disabled', true);
+stopColorSwitcher.setAttribute('disabled', '');
 
 function getRandomHexColor() {
   return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
@@ -14,14 +14,14 @@ const bodyColorChanger = () => {
 };
 
 const handleStartButton = () => {
-  startColorSwitcher.setAttribute('disabled', true);
+  startColorSwitcher.setAttribute('disabled', '');
   stopColorSwitcher.removeAttribute('disabled');
 
   intervalId = setInterval(bodyColorChanger, 1000);
 };
 const handleStopButton = () => {
   startColorSwitcher.removeAttribute('disabled');
-  stopColorSwitcher.setAttribute('disabled', true);
+  stopColorSwitcher.setAttribute('disabled', '');
 
   clearInterval(intervalId);
 };
