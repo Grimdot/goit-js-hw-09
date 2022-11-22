@@ -3,6 +3,8 @@ import 'flatpickr/dist/flatpickr.min.css';
 import Notiflix from 'notiflix';
 import 'notiflix/dist/notiflix-3.2.5.min.css';
 
+const TIMER_DELAY = 1000;
+
 const refs = {
   startTimerButton: document.querySelector('button[data-start]'),
   daysValue: document.querySelector('span[data-days]'),
@@ -30,6 +32,7 @@ const flatpickrOptions = {
     if (selectedDateMs < Date.now()) {
       refs.startTimerButton.setAttribute('disabled', '');
       Notiflix.Notify.failure('Please choose a date in the future');
+      render(0);
     } else {
       refs.startTimerButton.removeAttribute('disabled', '');
     }
@@ -61,17 +64,29 @@ function addLeadingZero(value) {
   return value.toString().padStart(2, '0');
 }
 
+function render(timeInMS) {
+  const convertedTime = convertMs(timeInMS);
+
+  refs.daysValue.textContent = addLeadingZero(convertedTime.days);
+  refs.hoursValue.textContent = addLeadingZero(convertedTime.hours);
+  refs.minutesValue.textContent = addLeadingZero(convertedTime.minutes);
+  refs.secondsValue.textContent = addLeadingZero(convertedTime.seconds);
+}
+
 function onClickTimerStart() {
+  refs.startTimerButton.setAttribute('disabled', '');
+
   timerId = setInterval(() => {
     const deltaTime = selectedDateMs - Date.now();
 
-    const convertedTime = convertMs(deltaTime);
+    render(deltaTime);
 
-    refs.daysValue.textContent = addLeadingZero(convertedTime.days);
-    refs.hoursValue.textContent = addLeadingZero(convertedTime.hours);
-    refs.minutesValue.textContent = addLeadingZero(convertedTime.minutes);
-    refs.secondsValue.textContent = addLeadingZero(convertedTime.seconds);
-  }, 1000);
+    if (deltaTime <= 0) {
+      clearInterval(timerId);
+      Notiflix.Notify.info('The timer has expired!!!');
+      render(0);
+    }
+  }, TIMER_DELAY);
 }
 
 refs.startTimerButton.addEventListener('click', onClickTimerStart);
