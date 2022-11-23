@@ -11,7 +11,7 @@ function onFormSubmit(e) {
   const delayStep = Number(form.elements.step.value);
   const amount = Number(form.elements.amount.value);
 
-  if (delay < 0 || delayStep < 0 || amount < 0) {
+  if (delay < 0 || delayStep < 0 || amount <= 0) {
     Notiflix.Notify.failure('Input valid values!!!');
     form.reset();
     return;
